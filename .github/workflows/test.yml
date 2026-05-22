@@ -3,15 +3,6 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
-    inputs:
-      configuration:
-        type: choice
-        description: The build configuration to use in the deploy stage.
-        required: true
-        default: Release
-        options:
-          - Debug
-          - Release
 
 permissions:
   contents: read
