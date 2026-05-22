@@ -25,3 +25,13 @@ jobs:
         shell: bash
         run: |
           dotnet test test/Cuemon.AspNetCore.Authentication.Tests/Cuemon.AspNetCore.Authentication.Tests.csproj --framework net11.0 --configuration Debug --results-directory /tmp/cuemon-results --blame --blame-hang --blame-hang-timeout 45s
+
+      - name: Upload activation artifact
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: dumps
+          include-hidden-files: true
+          path: |
+            /tmp/cuemon-results/**/*.dmp
+          if-no-files-found: ignore
