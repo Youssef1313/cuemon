@@ -1,0 +1,36 @@
+name: Test Pipeline
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      configuration:
+        type: choice
+        description: The build configuration to use in the deploy stage.
+        required: true
+        default: Release
+        options:
+          - Debug
+          - Release
+
+permissions:
+  contents: read
+
+jobs:
+  init:
+    name: initialize
+    runs-on: ubuntu-24.04
+    steps:
+
+      - name: Checkout
+        uses: codebeltnet/git-checkout@v1
+
+      - name: Install .NET
+        uses: codebeltnet/install-dotnet@v3
+        with:
+          includePreview: true
+
+      - name: Run test
+        shell: bash
+        run: |
+          dotnet test test/Cuemon.AspNetCore.Authentication.Tests/Cuemon.AspNetCore.Authentication.Tests.csproj --framework net11.0 --configuration Debug --results-directory /tmp/cuemon-results --blame --blame-hang --blame-hang-timeout 45s
